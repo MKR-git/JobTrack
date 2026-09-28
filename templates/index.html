@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>JobTrack Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            color: #333;
+        }
+
+        .dashboard-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        /* Dashboard Header */
+
+        .dashboard-header {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .dashboard-header p {
+            margin: 0;
+            color: #666;
+        }
+
+        .primary-button {
+            display: inline-block;
+            padding: 11px 18px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .primary-button:hover {
+            opacity: 0.85;
+        }
+
+        /* Section */
+
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-section h2,
+        .dashboard-section h3 {
+            margin-bottom: 18px;
+        }
+
+        /* Dashboard Cards */
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-card h3 {
+            margin: 0;
+            font-size: 15px;
+            color: #666;
+        }
+
+        .dashboard-card p {
+            margin: 12px 0 0;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .dashboard-card a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .dashboard-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Recent Applications */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+        }
+
+        .section-header a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .recent-table-container {
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .recent-jobs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .recent-jobs-table th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .recent-jobs-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .recent-jobs-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .recent-jobs-table a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .recent-jobs-table a:hover {
+            text-decoration: underline;
+        }
+
+        /* Status */
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            background-color: #eee;
+        }
+
+        .status-applied {
+            background-color: #e8f1ff;
+        }
+
+        .status-interview {
+            background-color: #fff3cd;
+        }
+
+        .status-selected {
+            background-color: #e7f6ec;
+        }
+
+        .status-rejected {
+            background-color: #f8e7e7;
+        }
+
+        /* No Jobs */
+
+        .no-jobs {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Two Column Sections */
+
+        .dashboard-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-card p {
+            margin: 12px 0;
+        }
+
+        .large-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .info-card a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .info-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Company List */
+
+        .company-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px 30px;
+        }
+
+        .company-list p {
+            margin: 10px 0;
+        }
+
+        /* Quick Actions */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .quick-action {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .quick-action-title {
+            display: block;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .quick-action-description {
+            display: block;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .dashboard-container {
+                width: 95%;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .company-list {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="dashboard-container">
+
+        <!-- Dashboard Header -->
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <h1>JobTrack Dashboard</h1>
+
+                <p>
+                    Track and manage your job applications in one place.
+                </p>
+
+            </div>
+
+            <a
+                href="{{ url_for('add_job') }}"
+                class="primary-button"
+            >
+                Add New Job
+            </a>
+
+        </div>
+
+
+        <!-- Application Overview -->
+
+        <div class="dashboard-section">
+
+            <h3>Application Overview</h3>
+
+            <div class="dashboard-cards">
+
+                <div class="dashboard-card">
+
+                    <h3>Total Jobs</h3>
+
+                    <p>
+                        {{ total_jobs }}
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <h3>Applied</h3>
+
+                    <p>
+
+                        <a
+                            href="{{ url_for('view_jobs', status='Applied') }}"
+                        >
+                            {{ applied_jobs }}
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <h3>Interview</h3>
+
+                    <p>
+
+                        <a
+                            href="{{ url_for('view_jobs', status='Interview') }}"
+                        >
+                            {{ interview_jobs }}
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <h3>Selected</h3>
+
+                    <p>
+
+                        <a
+                            href="{{ url_for('view_jobs', status='Selected') }}"
+                        >
+                            {{ selected_jobs }}
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <h3>Rejected</h3>
+
+                    <p>
+
+                        <a
+                            href="{{ url_for('view_jobs', status='Rejected') }}"
+                        >
+                            {{ rejected_jobs }}
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Recent Applications -->
+
+        <div class="dashboard-section">
+
+            <div class="section-header">
+
+                <h3>Recent Applications</h3>
+
+                <a href="{{ url_for('view_jobs') }}">
+                    View All Jobs
+                </a>
+
+            </div>
+
+
+            {% if recent_jobs %}
+
+                <div class="recent-table-container">
+
+                    <table class="recent-jobs-table">
+
+                        <tr>
+
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Date Applied</th>
+
+                        </tr>
+
+
+                        {% for job in recent_jobs %}
+
+                            <tr>
+
+                                <td>
+
+                                    <a
+                                        href="{{ url_for('job_details', job_id=job['id']) }}"
+                                    >
+
+                                        <strong>
+                                            {{ job["company"] }}
+                                        </strong>
+
+                                    </a>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ job["role"] }}
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if job["status"] == "Applied" %}
+
+                                        <span class="status status-applied">
+                                            Applied
+                                        </span>
+
+                                    {% elif job["status"] == "Interview" %}
+
+                                        <span class="status status-interview">
+                                            Interview
+                                        </span>
+
+                                    {% elif job["status"] == "Selected" %}
+
+                                        <span class="status status-selected">
+                                            Selected
+                                        </span>
+
+                                    {% elif job["status"] == "Rejected" %}
+
+                                        <span class="status status-rejected">
+                                            Rejected
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status">
+                                            {{ job["status"] }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ job["date_applied"] or "Not added" }}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="no-jobs">
+
+                    <p>
+                        No applications available.
+                    </p>
+
+                    <a
+                        href="{{ url_for('add_job') }}"
+                        class="primary-button"
+                    >
+                        Add Your First Job
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Success Rate and Salary -->
+
+        <div class="dashboard-two-column">
+
+            <div class="dashboard-section">
+
+                <h3>Success Rate</h3>
+
+                <div class="info-card">
+
+                    <p>
+                        <strong>Selected Jobs</strong>
+                    </p>
+
+                    <p class="large-number">
+                        {{ selected_jobs }}
+                    </p>
+
+                    <p>
+                        <strong>Success Rate</strong>
+                    </p>
+
+                    <p class="large-number">
+                        {{ "%.2f"|format(success_rate) }}%
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-section">
+
+                <h3>Salary Statistics</h3>
+
+                <div class="info-card">
+
+                    {% if salary_stats["highest"] is not none %}
+
+                        <p>
+                            <strong>Highest Salary</strong>
+                        </p>
+
+                        <p class="large-number">
+                            {{ "%.2f"|format(salary_stats["highest"]) }} LPA
+                        </p>
+
+                        <p>
+                            <strong>Lowest Salary</strong>
+                        </p>
+
+                        <p>
+                            {{ "%.2f"|format(salary_stats["lowest"]) }} LPA
+                        </p>
+
+                        <p>
+                            <strong>Average Salary</strong>
+                        </p>
+
+                        <p>
+                            {{ "%.2f"|format(salary_stats["average"]) }} LPA
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            No salary data available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Location and Role -->
+
+        <div class="dashboard-two-column">
+
+            <div class="dashboard-section">
+
+                <h3>Jobs by Location</h3>
+
+                <div class="info-card">
+
+                    {% if location_jobs %}
+
+                        {% for location in location_jobs %}
+
+                            <p>
+
+                                <strong>
+
+                                    <a
+                                        href="{{ url_for('view_jobs', location=location['location']) }}"
+                                    >
+                                        {{ location["location"] }}
+                                    </a>
+
+                                </strong>
+
+                                :
+                                {{ location["count"] }}
+
+                            </p>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p>
+                            No location data available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-section">
+
+                <h3>Jobs by Role</h3>
+
+                <div class="info-card">
+
+                    {% if role_jobs %}
+
+                        {% for role in role_jobs %}
+
+                            <p>
+
+                                <strong>
+
+                                    <a
+                                        href="{{ url_for('view_jobs', role=role['role']) }}"
+                                    >
+                                        {{ role["role"] }}
+                                    </a>
+
+                                </strong>
+
+                                :
+                                {{ role["count"] }}
+
+                            </p>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p>
+                            No role data available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Jobs by Company -->
+
+        <div class="dashboard-section">
+
+            <h3>Jobs by Company</h3>
+
+            <div class="info-card company-list">
+
+                {% if company_jobs %}
+
+                    {% for company in company_jobs %}
+
+                        <p>
+
+                            <strong>
+
+                                <a
+                                    href="{{ url_for('view_jobs', company=company['company']) }}"
+                                >
+                                    {{ company["company"] }}
+                                </a>
+
+                            </strong>
+
+                            :
+                            {{ company["count"] }}
+
+                        </p>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>
+                        No company data available.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+
+        <div class="dashboard-section">
+
+            <h3>Quick Actions</h3>
+
+            <div class="quick-actions">
+
+                <a
+                    href="{{ url_for('add_job') }}"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-title">
+                        Add Job
+                    </span>
+
+                    <span class="quick-action-description">
+                        Add a new job application
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('view_jobs') }}"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-title">
+                        View Jobs
+                    </span>
+
+                    <span class="quick-action-description">
+                        View and manage applications
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('status_summary') }}"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-title">
+                        Status Summary
+                    </span>
+
+                    <span class="quick-action-description">
+                        Check application status
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Status Summary - JobTrack</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f8;
+
+            color: #333;
+        }
+
+
+        /* Navbar */
+
+        .navbar {
+            background: #1f2937;
+
+            color: white;
+
+            padding: 16px 40px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .navbar a {
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 22px;
+
+            font-size: 15px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Main */
+
+        .container {
+            max-width: 1100px;
+
+            margin: 45px auto;
+
+            padding: 0 20px;
+        }
+
+
+        /* Header */
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+
+            font-size: 30px;
+        }
+
+        .page-header p {
+            margin-top: 8px;
+
+            color: #6b7280;
+        }
+
+
+        /* Summary cards */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .summary-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+
+            transition: transform 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+        }
+
+
+        .summary-card h3 {
+            margin: 0 0 15px;
+
+            font-size: 16px;
+
+            color: #6b7280;
+        }
+
+
+        .count {
+            font-size: 38px;
+
+            font-weight: bold;
+
+            margin: 0;
+        }
+
+
+        .applied {
+            color: #2563eb;
+        }
+
+        .interview {
+            color: #d97706;
+        }
+
+        .selected {
+            color: #16a34a;
+        }
+
+        .rejected {
+            color: #dc2626;
+        }
+
+
+        /* Status explanation */
+
+        .info-card {
+            background: white;
+
+            margin-top: 30px;
+
+            padding: 28px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-card h2 {
+            margin-top: 0;
+
+            font-size: 21px;
+        }
+
+        .info-card p {
+            color: #6b7280;
+
+            line-height: 1.6;
+        }
+
+
+        /* Actions */
+
+        .actions {
+            margin-top: 30px;
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .button {
+            display: inline-block;
+
+            padding: 11px 20px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .primary-button {
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        .secondary-button {
+            background: #e5e7eb;
+
+            color: #374151;
+        }
+
+        .secondary-button:hover {
+            background: #d1d5db;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+            .navbar a {
+                margin-left: 10px;
+
+                margin-right: 10px;
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .page-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .button {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<div class="navbar">
+
+    <h2>JobTrack</h2>
+
+    <div>
+
+        <a href="{{ url_for('home') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('add_job') }}">
+            Add Job
+        </a>
+
+        <a href="{{ url_for('view_jobs') }}">
+            View Jobs
+        </a>
+
+        <a href="{{ url_for('status_summary') }}">
+            Status Summary
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Main container -->
+
+<div class="container">
+
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Status Summary</h1>
+
+            <p>
+                Overview of your job application progress.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary cards -->
+
+    <div class="summary-grid">
+
+
+        <!-- Applied -->
+
+        <div class="summary-card">
+
+            <h3>Applied</h3>
+
+            <p class="count applied">
+                {{ applied_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- Interview -->
+
+        <div class="summary-card">
+
+            <h3>Interview</h3>
+
+            <p class="count interview">
+                {{ interview_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- Selected -->
+
+        <div class="summary-card">
+
+            <h3>Selected</h3>
+
+            <p class="count selected">
+                {{ selected_jobs }}
+            </p>
+
+        </div>
+
+
+        <!-- Rejected -->
+
+        <div class="summary-card">
+
+            <h3>Rejected</h3>
+
+            <p class="count rejected">
+                {{ rejected_jobs }}
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info-card">
+
+        <h2>Application Progress</h2>
+
+        <p>
+            Use this page to quickly understand the current
+            status of your job applications. You can view the
+            complete list of applications and update their
+            status whenever there is a change.
+        </p>
+
+    </div>
+
+
+    <!-- Actions -->
+
+    <div class="actions">
+
+        <a
+            href="{{ url_for('view_jobs') }}"
+            class="button primary-button"
+        >
+            View All Jobs
+        </a>
+
+
+        <a
+            href="{{ url_for('home') }}"
+            class="button secondary-button"
+        >
+            Back to Dashboard
+        </a>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

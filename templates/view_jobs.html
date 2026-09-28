@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Jobs - JobTrack</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: 35px auto;
+        }
+
+        /* Page Header */
+
+        .page-header {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #666;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .secondary-button {
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+        /* Sections */
+
+        .filter-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .filter-section h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .filter-section p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 170px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Table */
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #fafafa;
+        }
+
+        td a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Status */
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.applied {
+            background-color: #e8f1ff;
+        }
+
+        .status.interview {
+            background-color: #fff3cd;
+        }
+
+        .status.selected {
+            background-color: #e7f6ec;
+        }
+
+        .status.rejected {
+            background-color: #f8e7e7;
+        }
+
+        /* Action Buttons */
+
+        .action-links {
+            white-space: nowrap;
+        }
+
+        .action-links a {
+            display: inline-block;
+            padding: 6px 9px;
+            margin-right: 4px;
+            border-radius: 5px;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .view-button {
+            background-color: #e9ecef;
+        }
+
+        .edit-button {
+            background-color: #fff3cd;
+        }
+
+        .delete-button {
+            background-color: #f8e7e7;
+        }
+
+        .action-links a:hover {
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        /* Pagination */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .pagination button {
+            min-width: 40px;
+        }
+
+        /* No Jobs */
+
+        .no-jobs {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .no-jobs h2 {
+            margin-top: 0;
+        }
+
+        .no-jobs p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+
+            .container {
+                width: 95%;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-buttons {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="container">
+
+        <!-- Page Header -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>My Jobs</h1>
+
+                <p>
+                    Showing {{ filtered_jobs }} jobs out of {{ total_jobs }} total jobs
+                </p>
+
+            </div>
+
+            <div class="header-buttons">
+
+                <a href="{{ url_for('home') }}">
+
+                    <button class="secondary-button">
+                        Back to Dashboard
+                    </button>
+
+                </a>
+
+                <a href="{{ url_for(
+                    'export_jobs',
+                    search=request.args.get('search', ''),
+                    status=request.args.get('status', ''),
+                    company=request.args.get('company', ''),
+                    sort=request.args.get('sort', 'newest')
+                ) }}">
+
+                    <button>
+                        Export Jobs to CSV
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Import CSV -->
+
+        <div class="filter-section">
+
+            <h3>Import Jobs from CSV</h3>
+
+            <form
+                method="POST"
+                action="{{ url_for('import_jobs') }}"
+                enctype="multipart/form-data"
+            >
+
+                <div class="filter-row">
+
+                    <div class="filter-group">
+
+                        <label>
+                            Select CSV File
+                        </label>
+
+                        <input
+                            type="file"
+                            name="csv_file"
+                            accept=".csv"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="filter-buttons">
+
+                        <button type="submit">
+                            Import Jobs
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+            <p>
+                CSV columns required:
+                Company, Role, Location, Status, Salary, Date Applied
+            </p>
+
+        </div>
+
+
+        <!-- Search and Filters -->
+
+        <div class="filter-section">
+
+            <h3>Search and Filter Jobs</h3>
+
+            <form
+                method="GET"
+                action="{{ url_for('view_jobs') }}"
+            >
+
+                <div class="filter-row">
+
+                    <div class="filter-group">
+
+                        <label>
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Company, Role or Location"
+                            value="{{ request.args.get('search', '') }}"
+                        >
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select name="status">
+
+                            <option value="">
+                                All
+                            </option>
+
+                            <option
+                                value="Applied"
+                                {% if request.args.get('status') == 'Applied' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Applied
+                            </option>
+
+                            <option
+                                value="Interview"
+                                {% if request.args.get('status') == 'Interview' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Interview
+                            </option>
+
+                            <option
+                                value="Selected"
+                                {% if request.args.get('status') == 'Selected' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Selected
+                            </option>
+
+                            <option
+                                value="Rejected"
+                                {% if request.args.get('status') == 'Rejected' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Rejected
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <label>
+                            Sort Jobs
+                        </label>
+
+                        <select name="sort">
+
+                            <option
+                                value="newest"
+                                {% if request.args.get('sort', 'newest') == 'newest' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Newest First
+                            </option>
+
+                            <option
+                                value="oldest"
+                                {% if request.args.get('sort') == 'oldest' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Oldest First
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <label>
+                            Jobs Per Page
+                        </label>
+
+                        <select name="per_page">
+
+                            <option
+                                value="5"
+                                {% if jobs_per_page == 5 %}
+                                    selected
+                                {% endif %}
+                            >
+                                5
+                            </option>
+
+                            <option
+                                value="10"
+                                {% if jobs_per_page == 10 %}
+                                    selected
+                                {% endif %}
+                            >
+                                10
+                            </option>
+
+                            <option
+                                value="20"
+                                {% if jobs_per_page == 20 %}
+                                    selected
+                                {% endif %}
+                            >
+                                20
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-buttons">
+
+                        <button type="submit">
+                            Apply Filters
+                        </button>
+
+                        <a href="{{ url_for('view_jobs') }}">
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                            >
+                                Clear Filters
+                            </button>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- Jobs Table -->
+
+        {% if jobs %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Salary</th>
+                            <th>Date Applied</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for job in jobs %}
+
+                            <tr>
+
+                                <td>
+
+                                    <a
+                                        href="{{ url_for('job_details', job_id=job['id']) }}"
+                                    >
+                                        <strong>
+                                            {{ job['company'] }}
+                                        </strong>
+                                    </a>
+
+                                </td>
+
+
+                                <td>
+                                    {{ job['role'] }}
+                                </td>
+
+
+                                <td>
+                                    {{ job['location'] }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if job['status'] == 'Applied' %}
+
+                                        <span class="status applied">
+                                            Applied
+                                        </span>
+
+                                    {% elif job['status'] == 'Interview' %}
+
+                                        <span class="status interview">
+                                            Interview
+                                        </span>
+
+                                    {% elif job['status'] == 'Selected' %}
+
+                                        <span class="status selected">
+                                            Selected
+                                        </span>
+
+                                    {% elif job['status'] == 'Rejected' %}
+
+                                        <span class="status rejected">
+                                            Rejected
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status">
+                                            {{ job['status'] }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ job['salary'] }}
+                                </td>
+
+
+                                <td>
+                                    {{ job['date_applied'] }}
+                                </td>
+
+
+                                <td class="action-links">
+
+                                    <a
+                                        href="{{ url_for('job_details', job_id=job['id']) }}"
+                                        class="view-button"
+                                    >
+                                        View
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('edit_job', job_id=job['id']) }}"
+                                        class="edit-button"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('delete_job', job_id=job['id']) }}"
+                                        class="delete-button"
+                                        onclick="return confirm('Are you sure you want to delete this job?');"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Pagination -->
+
+            {% if total_pages > 1 %}
+
+                <div class="pagination">
+
+                    {% if page > 1 %}
+
+                        <a href="{{ url_for(
+                            'view_jobs',
+                            page=page - 1,
+                            search=request.args.get('search', ''),
+                            status=request.args.get('status', ''),
+                            company=request.args.get('company', ''),
+                            sort=request.args.get('sort', 'newest'),
+                            per_page=jobs_per_page
+                        ) }}">
+
+                            <button class="secondary-button">
+                                Previous
+                            </button>
+
+                        </a>
+
+                    {% endif %}
+
+
+                    {% for page_number in range(1, total_pages + 1) %}
+
+                        {% if page_number == page %}
+
+                            <button>
+                                {{ page_number }}
+                            </button>
+
+                        {% else %}
+
+                            <a href="{{ url_for(
+                                'view_jobs',
+                                page=page_number,
+                                search=request.args.get('search', ''),
+                                status=request.args.get('status', ''),
+                                company=request.args.get('company', ''),
+                                sort=request.args.get('sort', 'newest'),
+                                per_page=jobs_per_page
+                            ) }}">
+
+                                <button class="secondary-button">
+                                    {{ page_number }}
+                                </button>
+
+                            </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if page < total_pages %}
+
+                        <a href="{{ url_for(
+                            'view_jobs',
+                            page=page + 1,
+                            search=request.args.get('search', ''),
+                            status=request.args.get('status', ''),
+                            company=request.args.get('company', ''),
+                            sort=request.args.get('sort', 'newest'),
+                            per_page=jobs_per_page
+                        ) }}">
+
+                            <button>
+                                Next
+                            </button>
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <div class="no-jobs">
+
+                <h2>No Jobs Found</h2>
+
+                <p>
+                    Try changing your search or filter.
+                </p>
+
+                <a href="{{ url_for('add_job') }}">
+
+                    <button>
+                        Add Your First Job
+                    </button>
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

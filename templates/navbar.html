@@ -1,0 +1,219 @@
+<style>
+
+    .navbar {
+        background: #111827;
+        color: white;
+        padding: 16px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+    }
+
+    .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .navbar-links a {
+        color: #d1d5db;
+        text-decoration: none;
+        padding: 9px 13px;
+        border-radius: 7px;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .navbar-links a:hover {
+        background: #1f2937;
+        color: white;
+    }
+
+    .navbar-links a.active {
+        background: #2563eb;
+        color: white;
+    }
+
+    .navbar-user {
+        color: #d1d5db;
+        font-size: 14px;
+        margin-left: 5px;
+    }
+
+    .logout-link {
+        background: #dc2626 !important;
+        color: white !important;
+    }
+
+    .logout-link:hover {
+        background: #b91c1c !important;
+    }
+
+
+    /* Flash Messages */
+
+    .flash-container {
+        max-width: 1200px;
+        margin: 20px auto 0;
+        padding: 0 20px;
+    }
+
+    .flash-message {
+        padding: 13px 18px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid transparent;
+    }
+
+    .flash-success {
+        background: #ecfdf5;
+        color: #047857;
+        border-color: #a7f3d0;
+    }
+
+    .flash-error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-color: #fecaca;
+    }
+
+    .flash-warning {
+        background: #fffbeb;
+        color: #b45309;
+        border-color: #fde68a;
+    }
+
+    .flash-info {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-color: #bfdbfe;
+    }
+
+
+    @media (max-width: 768px) {
+
+        .navbar {
+            padding: 15px;
+        }
+
+        .navbar-links {
+            width: 100%;
+        }
+
+        .navbar-links a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .flash-container {
+            padding: 0 15px;
+        }
+
+    }
+
+</style>
+
+
+<nav class="navbar">
+
+    <a href="{{ url_for('home') }}" class="navbar-brand">
+        JobTrack
+    </a>
+
+
+    <div class="navbar-links">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="{% if request.endpoint == 'home' %}active{% endif %}"
+        >
+            Dashboard
+        </a>
+
+
+        <a
+            href="{{ url_for('add_job') }}"
+            class="{% if request.endpoint == 'add_job' %}active{% endif %}"
+        >
+            Add Job
+        </a>
+
+
+        <a
+            href="{{ url_for('view_jobs') }}"
+            class="{% if request.endpoint == 'view_jobs' %}active{% endif %}"
+        >
+            View Jobs
+        </a>
+
+
+        <a
+            href="{{ url_for('status_summary') }}"
+            class="{% if request.endpoint == 'status_summary' %}active{% endif %}"
+        >
+            Status Summary
+        </a>
+
+
+        {% if session.get("username") %}
+
+            <span class="navbar-user">
+                {{ session.get("username") }}
+            </span>
+
+
+            <a
+                href="{{ url_for('profile') }}"
+                class="{% if request.endpoint == 'profile' %}active{% endif %}"
+            >
+                Profile
+            </a>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<!-- Flash Messages -->
+
+<div class="flash-container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash-message flash-{{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+</div>
